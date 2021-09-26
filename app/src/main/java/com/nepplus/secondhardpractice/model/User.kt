@@ -67,5 +67,5 @@ data class User(
 //모델 클래스를 어떻게 데이터 반영할지 data class val item : List<User> = emptyList()
 data class UserResponse(
 
-    val item : List<User> = emptyList()
+    val items : List<User> = emptyList()
 )

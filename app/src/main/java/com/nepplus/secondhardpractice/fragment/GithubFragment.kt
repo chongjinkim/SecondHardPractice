@@ -61,7 +61,7 @@ class GithubFragment : Fragment() {
     //데이터의 변경을 observe만 알려주어서 구현을 하면된다.
     private fun observe(){
         viewModel.user.observe(viewLifecycleOwner){
-            githubAdapter.submitList(it.item)
+            githubAdapter.submitList(it.items)
         }
     }
 

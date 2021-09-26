@@ -1,10 +1,9 @@
 package com.nepplus.secondhardpractice.network
 
-import androidx.annotation.RestrictTo
 import com.google.gson.Gson
+import com.nepplus.secondhardpractice.BuildConfig
 import com.nepplus.secondhardpractice.remotedatasource.GithubAPI
 import okhttp3.OkHttpClient
-import org.koin.android.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -19,7 +18,7 @@ class Client(private val gSon : Gson) {
 
     //이 코드의 의미???
     private val httpLogLevel
-        get() = if(BuildConfig.DEBUG) HttpCustomLoggingInterceptor.Level.BODY else HttpCustomLoggingInterceptor.Level.NONE
+        get() = if (BuildConfig.DEBUG) HttpCustomLoggingInterceptor.Level.BODY else HttpCustomLoggingInterceptor.Level.NONE
 
     fun createClient(host : String = USER_BASE_URL) : Retrofit{
 
