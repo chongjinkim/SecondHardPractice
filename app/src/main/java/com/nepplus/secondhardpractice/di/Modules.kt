@@ -15,6 +15,7 @@ val utilModule = module {
 val repositoryModule = module {
     single { Client(get()) }
     single <GithubRepository> { GithubRepositoryImpl(get())}
+
 }
 
 val viewModelModule = module {

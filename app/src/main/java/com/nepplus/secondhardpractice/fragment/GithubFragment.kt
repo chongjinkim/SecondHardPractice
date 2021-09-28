@@ -1,27 +1,26 @@
 package com.nepplus.secondhardpractice.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DiffUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.R
 import com.nepplus.secondhardpractice.databinding.FragmentCouroutineItemBinding
 import com.nepplus.secondhardpractice.databinding.FragmentGithubBinding
 import com.nepplus.secondhardpractice.model.User
-import com.nepplus.secondhardpractice.model.UserResponse
 import com.nepplus.secondhardpractice.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GithubFragment : Fragment() {
 
-    lateinit var binding: FragmentGithubBinding
+    lateinit var binding : FragmentGithubBinding
 
     val viewModel : GithubViewModel by viewModel()
 
@@ -40,10 +39,12 @@ class GithubFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observe()
+
+
     }
 
 
-  //addtextchangelistener -> edittext글자 주입, viewmodel에서 세팅을 가져옴
+    //addtextchangelistener -> edittext글자 주입, viewmodel에서 세팅을 가져옴
 
     private fun initView() {
         binding.apply {
@@ -51,8 +52,16 @@ class GithubFragment : Fragment() {
                 viewModel.setUser(it.toString())
             }
 
-            recyclerview.apply {
-                adapter = githubAdapter
+           binding.recyclerview.apply {
+                adapter = githubAdapter.apply {
+                    clickListener = { user ->
+                        val fragment = GithubDetailFragment.newInstance(user)
+                        activity
+                            ?.supportFragmentManager
+                            ?.beginTransaction()
+                            ?.replace(R.id.fragmentContainerView, fragment)
+                    }
+                }
             }
         }
     }
@@ -71,7 +80,7 @@ class GithubViewHoler(val binding: FragmentCouroutineItemBinding) : RecyclerView
 
 class GithubAdapter : ListAdapter<User, GithubViewHoler>(User.DiffUtil) {
 
-    var clickListener: ((User) -> Unit)? = null
+    var clickListener : ((User) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubViewHoler {
         val view = FragmentCouroutineItemBinding.inflate(LayoutInflater.from(parent.context), parent,false
@@ -87,7 +96,7 @@ class GithubAdapter : ListAdapter<User, GithubViewHoler>(User.DiffUtil) {
 
         holder.binding.apply {
             Glide.with(this.root).load(getItem(position).avatar_url).into(image)
-            title.text = getItem(position).blog
+            title.text = getItem(position).name
             subTitle.text = getItem(position).repos_url
 
         }.also {
